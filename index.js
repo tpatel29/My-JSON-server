@@ -73,7 +73,7 @@ const app = express();
 const port = 3000;
 
 
-app.get('/repository/:username/:repository/file/:path', (req, res) => {
+app.get('/:username/:repository/:path', (req, res) => {
 	const username = req.params.username;
 	const repository = req.params.repository;
 	const path = req.params.path;
