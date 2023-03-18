@@ -94,6 +94,7 @@ app.get('/:username/:repository/:path', (req, res) => {
 				}
 				return match;
 			});
+			data.Mailboxes = filteredData;
 			res.json(data);
 		})
 		.catch(error => {
