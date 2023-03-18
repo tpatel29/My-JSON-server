@@ -94,7 +94,7 @@ app.get('/:username/:repository/:path', (req, res) => {
 				}
 				return match;
 			});
-			res.send(filteredData);
+			res.json(data);
 		})
 		.catch(error => {
 			res.status(404).send('File not found.');
