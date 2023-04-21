@@ -3,6 +3,10 @@ const axios = require('axios');
 const fs = require('fs');
 
 const app = express();
+app.use(express.text())
+app.use(express.json())
+
+
 const port = 3000;
 app.use((req, res, next) => {
 	const date = new Date().toISOString();
@@ -70,9 +74,11 @@ app.get('/Sites/:filename', (req, res) => {
 app.post('/add/COS/:loe', (req, res) => {
 	const loe = req.params.loe;
 	const filePath = `./COS/${loe}.json`;
-	const jsonData = JSON.stringify(req.body);
+	// const jsonData = JSON.stringify(req.body);
+	const jsonObject = JSON.parse(req.body);
 
-	fs.writeFile(filePath, jsonData, 'utf8', (err) => {
+
+	fs.writeFile(filePath, jsonObject, 'utf8', (err) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send('Error writing file');
@@ -85,9 +91,10 @@ app.post('/add/COS/:loe', (req, res) => {
 app.post('/add/Mailboxes/:loe', (req, res) => {
 	const loe = req.params.loe;
 	const filePath = `./Mailboxes/${loe}.json`;
-	const jsonData = JSON.stringify(req.body);
+	// const jsonData = JSON.stringify(req.body);
+	const jsonObject = JSON.parse(req.body);
 
-	fs.writeFile(filePath, jsonData, 'utf8', (err) => {
+	fs.writeFile(filePath, jsonObject, 'utf8', (err) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send('Error writing file');
@@ -100,9 +107,10 @@ app.post('/add/Mailboxes/:loe', (req, res) => {
 app.post('/add/Sites/:loe', (req, res) => {
 	const loe = req.params.loe;
 	const filePath = `./Sites/${loe}.json`;
-	const jsonData = JSON.stringify(req.body);
+	// const jsonData = JSON.stringify(req.body);
+	const jsonObject = JSON.parse(req.body);
 
-	fs.writeFile(filePath, jsonData, 'utf8', (err) => {
+	fs.writeFile(filePath, jsonObject, 'utf8', (err) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send('Error writing file');
@@ -110,6 +118,13 @@ app.post('/add/Sites/:loe', (req, res) => {
 			res.send(`File ${loe}.json successfully added to the Sites folder.`);
 		}
 	});
+	// fs.writeFile(filePath, req.body, (err) => {
+	// 	if (err) {
+	// 		console.error(err);
+	// 	} else {
+	// 		console.log(`File '${filePath}' saved successfully.`);
+	// 	}
+	// });
 });
 
 
@@ -194,7 +209,6 @@ app.get('/:username/:repository/:path', (req, res) => {
 });
 let directoryId = "Data"
 app.get("/", async (req, res) => {
-	console.log( await drive.files.list())
 	// drive.files.list({
 	// 	q: `name contains ''`,
 	// }, (err, res) => {
@@ -214,15 +228,6 @@ app.get("/", async (req, res) => {
 	// 		// console.log('No files found.');
 	// 	}
 	// });
-	drive.files.get({ fileId: 'pic1', alt: 'media' }, { responseType: 'stream' },
-		(err, res) => {
-			if (err) return console.error('The API returned an error: ' + err.toString());
-			const filePath = path.join(__dirname, 'file.txt');
-			const dest = fs.createWriteStream(filePath);
-			res.data.on('error', (err) => console.error(err));
-			res.data.on('end', () => console.log('File downloaded to', filePath));
-			res.data.pipe(dest);
-		});
 	res.send("hello");
 });
 
