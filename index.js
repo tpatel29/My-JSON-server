@@ -10,13 +10,6 @@ app.use(express.json())
 const port = 3000;
 
 
-app.post("/delete/:site", (req, res) =>{
-	const site = req.params.site;
-});
-app.post("/add/:site", (req, res) => {
-	const site = req.params.site;
-});
-
 app.get('/COS/:filename', (req, res) => {
 	const filename = req.params.filename;
 	const filePath = `./COS/${filename}.json`;
@@ -63,7 +56,7 @@ app.get('/Sites/:filename', (req, res) => {
 });
 
 app.post('/add/COS/:loe', (req, res) => {
-	const loe = req.params.loe;
+	const loe = req.params.loe.toUpperCase();
 	const filePath = `./COS/${loe}.json`;
 	// const jsonData = JSON.stringify(req.body);
 	const jsonObject = JSON.parse(req.body);
@@ -80,7 +73,7 @@ app.post('/add/COS/:loe', (req, res) => {
 });
 
 app.post('/add/Mailboxes/:loe', (req, res) => {
-	const loe = req.params.loe;
+	const loe = req.params.loe.toUpperCase();
 	const filePath = `./Mailboxes/${loe}.json`;
 	// const jsonData = JSON.stringify(req.body);
 	const jsonObject = JSON.parse(req.body);
@@ -96,12 +89,14 @@ app.post('/add/Mailboxes/:loe', (req, res) => {
 });
 
 app.post('/add/Sites/:loe', (req, res) => {
-	const loe = req.params.loe;
+	const loe = req.params.loe.toUpperCase();
 	const filePath = `./Sites/${loe}.json`;
 	// const jsonData = JSON.stringify(req.body);
+  // console.log(req.body);
 	const jsonObject = JSON.parse(req.body);
+  let jsonString = JSON.stringify(jsonObject);
 
-	fs.writeFile(filePath, jsonObject, 'utf8', (err) => {
+	fs.writeFile(filePath, jsonString, 'utf8', (err) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send('Error writing file');
@@ -121,7 +116,7 @@ app.post('/add/Sites/:loe', (req, res) => {
 
 
 app.delete('/delete/COS/:filename', (req, res) => {
-	const filename = req.params.filename;
+	const filename = req.params.filename.toUpperCase();
 	const filePath = `./COS/${filename}.json`;
 
 	fs.unlink(filePath, (err) => {
@@ -136,7 +131,7 @@ app.delete('/delete/COS/:filename', (req, res) => {
 
 // Set up route to delete file from Mailboxes folder
 app.delete('/delete/Mailboxes/:filename', (req, res) => {
-	const filename = req.params.filename;
+	const filename = req.params.filename.toUpperCase();
 	const filePath = `./Mailboxes/${filename}.json`;
 
 	fs.unlink(filePath, (err) => {
@@ -151,7 +146,7 @@ app.delete('/delete/Mailboxes/:filename', (req, res) => {
 
 // Set up route to delete file from Sites folder
 app.delete('/delete/Sites/:filename', (req, res) => {
-	const filename = req.params.filename;
+	const filename = req.params.filename.toUpperCase();
 	const filePath = `./Sites/${filename}.json`;
 
 	fs.unlink(filePath, (err) => {
