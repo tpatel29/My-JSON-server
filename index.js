@@ -8,16 +8,7 @@ app.use(express.json())
 
 
 const port = 3000;
-app.use((req, res, next) => {
-	const date = new Date().toISOString();
-	const logMessage = `${date} - ${req.method} ${req.url}`;
 
-	fs.appendFile('request.log', logMessage + '\n', err => {
-		if (err) console.error(err);
-	});
-
-	next();
-});
 
 app.post("/delete/:site", (req, res) =>{
 	const site = req.params.site;
